@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f2fe; /* Light blue sky color */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        #emailGenerator {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            width: 400px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #555;
+        }
+
+        input {
+            width: calc(100% - 16px);
+            margin: 8px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #2196F3; /* Blue color */
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #1565c0; /* Darker shade of blue on hover */
+        }
+
+        #downloadLink {
+            display: none;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+    <title>Email Generator</title>
+</head>
+<body>
+
+<div id="emailGenerator">
+    <h2>Email Generator</h2>
+
+    <label>Note: Enter lowercase alphabets only</label>
+
+    <label for="department">Enter the department (cs/se/it/ds)</label>
+    <input type="text" id="department" placeholder="Department (cs/se/it/ds)">
+
+    <label for="batch">Enter the batch (without f, after 20)</label>
+    <input type="number" id="batch" placeholder="Batch (numeric, after 20)" min="21">
+
+    <label for="section">Enter the section (m/a)</label>
+    <input type="text" id="section" placeholder="Section (m/a)" pattern="[maMA]{1}" title="Only 'm' or 'a' allowed">
+
+    <button onclick="generateEmails()">Generate Emails</button>
+
+    <a id="downloadLink" download="generated_emails.txt" href="#">Download Emails</a>
+
+    <p> Developed with 💖 by <strong> Usman Ghias </strong></b>
+
+</div>
+
+<script>
+    function generateEmails() {
+        const dep = document.getElementById('department').value.toLowerCase();
+        const bat = document.getElementById('batch').value;
+        const sec = document.getElementById('section').value.toLowerCase();
+
+        // Validate input for the batch (should be numeric and after 20)
+        if (isNaN(bat) || bat < 21) {
+            alert("Please enter a valid batch number (numeric, after 20).");
+            return;
+        }
+
+        // Validate input for the section (should be 'm' or 'a')
+        if (!/^[ma]{1}$/i.test(sec)) {
+            alert("Please enter a valid section ('m' or 'a').");
+            return;
+        }
+
+        let emails = '';
+
+        for (let i = 1; i < 61; i++) {
+            if (dep === 'ds') {
+                emails += `bsdsf${bat}${sec}0${i.toString().padStart(2, '0')}@pucit.edu.pk`;
+            } else {
+                emails += `b${dep}f${bat}${sec}5${i.toString().padStart(2, '0')}@pucit.edu.pk`;
+            }
+
+            if (i !== 60) {
+                emails += ', ';
+            }
+        }
+
+        // Display generated emails
+        alert(`Generated emails:\n${emails}`);
+
+        // Create and download a text file
+        const blob = new Blob([emails], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+
+        const downloadLink = document.getElementById('downloadLink');
+        downloadLink.setAttribute('href', url);
+        downloadLink.style.display = 'block';
+    }
+</script>
+
+
+</body>
+</html>
